@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muiz Banner Empire | Price Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <header class="bg-white border-b sticky top-0 z-10">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div>
+        <div class="text-xl font-extrabold">Muiz Banner Empire</div>
+        <div class="text-xs text-slate-600">Web Calculator (Auto kira harga & hasil)</div>
+      </div>
+      <button id="btnCopy" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-semibold">
+        Copy Ringkasan
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <!-- Form -->
+    <section class="bg-white border rounded-3xl p-6">
+      <h2 class="text-lg font-extrabold">Kira Harga</h2>
+      <p class="text-sm text-slate-600 mt-1">Masuk maklumat, sistem terus keluarkan hasil kiraan.</p>
+
+      <div class="mt-5 grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-sm font-semibold">Produk</label>
+          <select id="product" class="mt-1 w-full border rounded-xl px-4 py-2">
+            <option value="banner">Banner (Tarpaulin)</option>
+            <option value="bunting">Bunting</option>
+            <option value="sticker">Sticker (per A4)</option>
+            <option value="canvas">Canvas</option>
+          </select>
+          <div class="text-xs text-slate-500 mt-1">Harga asas ikut jenis produk (boleh ubah dalam code).</div>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">Kuantiti</label>
+          <input id="qty" type="number" min="1" value="1" class="mt-1 w-full border rounded-xl px-4 py-2" />
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">Lebar (kaki)</label>
+          <input id="w" type="number" min="0" step="0.1" value="2" class="mt-1 w-full border rounded-xl px-4 py-2" />
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">Tinggi (kaki)</label>
+          <input id="h" type="number" min="0" step="0.1" value="5" class="mt-1 w-full border rounded-xl px-4 py-2" />
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-sm font-semibold">Finishing</label>
+          <div class="mt-2 grid sm:grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 border rounded-xl px-3 py-2 bg-slate-50">
+              <input id="eyelet" type="checkbox" class="scale-110">
+              <div>
+                <div class="font-semibold text-sm">Mata ayam</div>
+                <div class="text-xs text-slate-600">RM0.50 / unit (min 4)</div>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-2 border rounded-xl px-3 py-2 bg-slate-50">
+              <input id="pocket" type="checkbox" class="scale-110">
+              <div>
+                <div class="font-semibold text-sm">Pocket atas/bawah</div>
+                <div class="text-xs text-slate-600">Tambah RM6.00 / pcs</div>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-2 border rounded-xl px-3 py-2 bg-slate-50">
+              <input id="rope" type="checkbox" class="scale-110">
+              <div>
+                <div class="font-semibold text-sm">Tali + ikatan</div>
+                <div class="text-xs text-slate-600">Tambah RM3.00 / pcs</div>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-2 border rounded-xl px-3 py-2 bg-slate-50">
+              <input id="design" type="checkbox" class="scale-110">
+              <div>
+                <div class="font-semibold text-sm">Design / setting</div>
+                <div class="text-xs text-slate-600">Tambah RM10.00 / order</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-sm font-semibold">Shipping (anggaran)</label>
+          <select id="ship" class="mt-1 w-full border rounded-xl px-4 py-2">
+            <option value="0">Pickup / COD (RM0)</option>
+            <option value="8">Courier biasa (RM8)</option>
+            <option value="12">Courier besar (RM12)</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="text-sm font-semibold">Catatan</label>
+          <textarea id="note" class="mt-1 w-full border rounded-xl px-4 py-2" rows="3"
+            placeholder="Contoh: nak siap hari Ahad, mata ayam 4 penjuru, pocket atas bawah"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section class="bg-white border rounded-3xl p-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-extrabold">Hasil Kiraan</h2>
+        <span id="badge" class="text-xs px-3 py-1 rounded-full bg-slate-100 border">Auto update</span>
+      </div>
+
+      <div class="mt-4 grid md:grid-cols-3 gap-4">
+        <div class="border rounded-2xl p-4 bg-slate-50">
+          <div class="text-xs text-slate-600">Keluasan</div>
+          <div class="text-xl font-extrabold" id="area">0 ft²</div>
+          <div class="text-xs text-slate-500 mt-1">Lebar × Tinggi</div>
+        </div>
+
+        <div class="border rounded-2xl p-4 bg-slate-50">
+          <div class="text-xs text-slate-600">Subtotal</div>
+          <div class="text-xl font-extrabold" id="subtotal">RM0.00</div>
+          <div class="text-xs text-slate-500 mt-1">Harga item + finishing</div>
+        </div>
+
+        <div class="border rounded-2xl p-4 bg-slate-50">
+          <div class="text-xs text-slate-600">Total</div>
+          <div class="text-2xl font-extrabold" id="total">RM0.00</div>
+          <div class="text-xs text-slate-500 mt-1">Subtotal + shipping</div>
+        </div>
+      </div>
+
+      <div class="mt-5 border-t pt-5">
+        <div class="font-extrabold">Ringkasan (untuk WhatsApp)</div>
+        <pre id="summary" class="mt-2 whitespace-pre-wrap text-sm bg-slate-900 text-white p-4 rounded-2xl"></pre>
+        <div class="text-xs text-slate-500 mt-2">Tekan “Copy Ringkasan” untuk salin.</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => `RM${Number(n || 0).toFixed(2)}`;
+
+    // Harga asas (boleh ubah ikut harga Muiz Banner)
+    // unit: RM per ft² untuk banner/bunting/canvas, RM per A4 untuk sticker (abaikan saiz)
+    const PRICES = {
+      banner: 2.80,   // RM/ft²
+      bunting: 4.50,  // RM/ft²
+      canvas: 6.50,   // RM/ft²
+      sticker: 8.00   // RM/A4 (per qty)
+    };
+
+    function clampNum(v, fallback=0) {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function calc() {
+      const product = $("product").value;
+      const qty = Math.max(1, clampNum($("qty").value, 1));
+
+      const w = Math.max(0, clampNum($("w").value, 0));
+      const h = Math.max(0, clampNum($("h").value, 0));
+      const area = w * h;
+
+      const ship = clampNum($("ship").value, 0);
+
+      const eyelet = $("eyelet").checked;
+      const pocket = $("pocket").checked;
+      const rope = $("rope").checked;
+      const design = $("design").checked;
+      const note = ($("note").value || "").trim();
+
+      // Item base
+      let base = 0;
+      if (product === "sticker") {
+        base = PRICES.sticker * qty; // sticker per A4 (qty = sheets)
+      } else {
+        base = (PRICES[product] * area) * qty;
+      }
+
+      // Finishing
+      let finishing = 0;
+      let eyeletCount = 0;
+      if (eyelet) {
+        // default min 4 mata ayam per pcs
+        eyeletCount = 4 * qty;
+        finishing += (0.50 * eyeletCount);
+      }
+      if (pocket) finishing += (6.00 * qty);
+      if (rope) finishing += (3.00 * qty);
+      if (design) finishing += 10.00; // sekali per order
+
+      const subtotal = base + finishing;
+      const total = subtotal + ship;
+
+      // UI
+      $("area").textContent = product === "sticker" ? "—" : `${area.toFixed(2)} ft²`;
+      $("subtotal").textContent = fmt(subtotal);
+      $("total").textContent = fmt(total);
+
+      // Summary
+      const productLabel = {
+        banner: "Banner (Tarpaulin)",
+        bunting: "Bunting",
+        sticker: "Sticker (A4)",
+        canvas: "Canvas"
+      }[product];
+
+      const lines = [];
+      lines.push("TEMPAHAN MUiz Banner Empire (Calculator)");
+      lines.push(`Produk: ${productLabel}`);
+      if (product !== "sticker") {
+        lines.push(`Saiz: ${w}ft × ${h}ft  (Area: ${area.toFixed(2)} ft²)`);
+        lines.push(`Harga asas: ${fmt(PRICES[product])} / ft²`);
+      } else {
+        lines.push(`Kuantiti: ${qty} sheet A4`);
+        lines.push(`Harga asas: ${fmt(PRICES.sticker)} / sheet`);
+      }
+      if (product !== "sticker") lines.push(`Kuantiti: ${qty} pcs`);
+
+      lines.push("");
+      lines.push(`Base: ${fmt(base)}`);
+
+      const fin = [];
+      if (eyelet) fin.push(`Mata ayam: ${eyeletCount} × RM0.50 = ${fmt(0.50 * eyeletCount)}`);
+      if (pocket) fin.push(`Pocket: ${qty} × RM6.00 = ${fmt(6.00 * qty)}`);
+      if (rope) fin.push(`Tali+Ikatan: ${qty} × RM3.00 = ${fmt(3.00 * qty)}`);
+      if (design) fin.push(`Design/Setting: ${fmt(10.00)}`);
+
+      lines.push(`Finishing: ${fin.length ? "" : "—"}`);
+      fin.forEach(x => lines.push(`- ${x}`));
+
+      lines.push("");
+      lines.push(`Subtotal: ${fmt(subtotal)}`);
+      lines.push(`Shipping: ${fmt(ship)}`);
+      lines.push(`TOTAL: ${fmt(total)}`);
+
+      if (note) {
+        lines.push("");
+        lines.push("Catatan:");
+        lines.push(note);
+      }
+
+      $("summary").textContent = lines.join("\n");
+
+      return { total, subtotal, ship, area, qty };
+    }
+
+    function bindAuto() {
+      const ids = ["product","qty","w","h","ship","eyelet","pocket","rope","design","note"];
+      ids.forEach(id => {
+        $(id).addEventListener("input", calc);
+        $(id).addEventListener("change", calc);
+      });
+    }
+
+    $("btnCopy").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText($("summary").textContent);
+        $("badge").textContent = "Copied!";
+        setTimeout(()=> $("badge").textContent="Auto update", 1200);
+      } catch {
+        alert("Browser tak bagi copy auto. Sila select text ringkasan dan copy manual.");
+      }
+    });
+
+    bindAuto();
+    calc();
+  </script>
+</body>
+</html>
